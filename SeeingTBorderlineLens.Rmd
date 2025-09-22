@@ -1,0 +1,236 @@
+---
+title: "Multiple Cases Sankey"
+author: "Ana Carolina Marinho"
+date: "2025-08-07"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+This R Markdown document generates the final Sankey diagram, displaying the data flow from attributions to participants and then to symptom severity.
+
+The chart was customized with the exact colors we defined for each type of node, making the visual analysis more intuitive and clear.
+
+This Sankey diagram supports the visualization of multiple cases within a cross-case analysis, as proposed by Eisenhardt (1989).
+
+In this way, we can observe the lo
+gic of replication in our study, identifying which cases confirm our theory and which ones disconfirm it.
+ 
+
+
+# Sankey with Continuous Severity Scores
+
+This Sankey diagram displays the width of flows between participants and symptom severity as proportional to the numerical scores. The code has been optimized for better readability, the labels have been translated into English, and the color palette has been switched to Dark2 from the RColorBrewer package, which is colorblind-safe and well-suited for categorical data.
+
+```{r}
+# --- Automatic Installation and Loading of Packages ---
+pacotes_necessarios <- c("tidyverse", "networkD3", "htmlwidgets", "htmltools", "RColorBrewer", "jsonlite", "here")
+for (pacote in pacotes_necessarios) {
+  if (!require(pacote, character.only = TRUE)) {
+    install.packages(pacote, dependencies = TRUE)
+  }
+  library(pacote, character.only = TRUE)
+}
+# We load the 'tabsankey2' dataframe from the specified path  
+# Using a relative path for GitHub compatibility
+tabsankey2 <- read_csv("tabsankey2.csv", locale = locale(decimal_mark = ","))
+
+# --- Preparing the data for the new Sankey with English labels ---
+# Using the new, clear column names
+personalizacao_nodes_2 <- tabsankey2$PersonalizationName %>%
+  recode(
+    "Alta" = "High",
+    "Média" = "Medium",
+    "Baixa" = "Low",
+  ) %>%
+  paste("Personalization", .)
+
+intencionalidade_nodes_2 <- tabsankey2$IntentionalityName %>%
+  recode(
+    "Alta" = "High",
+    "Média" = "Medium",
+    "Baixa" = "Low",
+  ) %>%
+  paste("Intentionality", .)
+
+participante_nodes_2 <- paste0(tabsankey2$Case, " (", tabsankey2$Family, ")")
+
+gravidade_nodes_2 <- tabsankey2$Severity %>%
+  recode(
+    "Alto" = "High",
+    "Moderado" = "Moderate",
+    "Suave" = "Mild",
+    "Nenhum ou Baixo" = "None or Low"
+  )
+# We unify all nodes into a single list  
+nodes_list_2 <- unique(c(
+  personalizacao_nodes_2,
+  intencionalidade_nodes_2,
+  participante_nodes_2,
+  gravidade_nodes_2
+))
+
+nodes_2 <- data.frame(
+  name = nodes_list_2,
+  stringsAsFactors = FALSE
+)
+
+# We assign a group to each node in order to color the diagram
+nodes_2$group <- case_when(
+  grepl("patient", nodes_2$name, ignore.case = TRUE) ~ "patient",
+  grepl("Sibling \\(fam4\\)", nodes_2$name) ~ "sibling_fam4",
+  grepl("sibling|Mother|Father", nodes_2$name, ignore.case = TRUE) ~ "sibling_normal",
+  grepl("High", nodes_2$name, ignore.case = TRUE) ~ "nivel_high",
+  grepl("Medium", nodes_2$name, ignore.case = TRUE) ~ "nivel_medium",
+  grepl("Low|None|None or Low", nodes_2$name, ignore.case = TRUE) ~ "nivel_low",
+  TRUE ~ "outros"
+)
+# We create a numeric ID for each node  
+nodes_2$id <- 0:(nrow(nodes_2) - 1)
+# --- We create the LINKS dataframe with the SCORES ---
+
+links_personalizacao_2 <- data.frame(
+  source = nodes_2$id[match(personalizacao_nodes_2, nodes_2$name)],
+  target = nodes_2$id[match(participante_nodes_2, nodes_2$name)],
+  value = tabsankey2$PersonalizationNum
+)
+
+links_intencionalidade_2 <- data.frame(
+  source = nodes_2$id[match(intencionalidade_nodes_2, nodes_2$name)],
+  target = nodes_2$id[match(participante_nodes_2, nodes_2$name)],
+  value = tabsankey2$IntentionalityNum
+)
+
+links_participante_gravidade_2 <- data.frame(
+  source = nodes_2$id[match(participante_nodes_2, nodes_2$name)],
+  target = nodes_2$id[match(gravidade_nodes_2, nodes_2$name)],
+  value = tabsankey2$SeverityScore
+)
+
+links_2 <- rbind(links_personalizacao_2, links_intencionalidade_2, links_participante_gravidade_2)
+# We generate the new Sankey diagram  
+num_groups_2 <- length(unique(nodes_2$group))
+brewer_palette_2 <- RColorBrewer::brewer.pal(n = min(num_groups_2, 8), name = "Dark2")
+# FIX HERE: We swapped the order of 'sibling_fam4' and 'sibling_normal'  
+my_color_2 <- paste0('d3.scaleOrdinal()
+             .domain(["patient", "sibling_normal", "sibling_fam4", "nivel_high", "nivel_medium", "nivel_low", "outros"])
+             .range(', jsonlite::toJSON(brewer_palette_2), ')')
+
+p_2 <- sankeyNetwork(
+  Links = links_2, Nodes = nodes_2,
+  Source = "source", Target = "target",
+  Value = "value", NodeID = "name",
+  NodeGroup = "group", colourScale = my_color_2,
+  fontSize = 12, nodeWidth = 30
+)
+# The legend also needs to be recreated for this diagram, now in English
+legenda_2 <- tags$div(
+  style = "display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: bold; font-size: 14px; width: 100%; max-width: 800px;",
+  tags$div("Attributions", style = "flex: 2.5; text-align: left;"),
+  tags$div("Participants", style = "flex: 2; text-align: center;"),
+  tags$div("Severity", style = "flex: 1.2; margin-left: auto; text-align: right;")
+)
+# We display the new legend and the new diagram
+browsable(tagList(legenda_2, p_2))
+```
+
+# Sankey for Emotional Relationships and Risk Behaviors
+
+We will now create a Sankey diagram for the emotional relationships and risk behaviors that were significant in our quantitative analysis.
+
+We observed that the family group reported more “Distant/poor” relationships, while the clinical group reported more “Physical Abuse.”
+
+```{r}
+# Load the required packages
+library(dplyr)
+library(networkD3)
+library(readr)
+library(htmltools)
+library(RColorBrewer)
+library(jsonlite)
+
+## Load the 'tabsankey2' dataframe from the specified path
+## Using a relative path for GitHub compatibility
+tabsankey2 <- read_csv("tabsankey2.csv", locale = locale(decimal_mark = ","))
+
+# 2. Prepare the data for the Sankey
+# Create the source node names
+distant_nodes <- "Distant/Poor"
+abuse_nodes <- "Physical Abuse"
+
+# Create the target node names (participants) using the new column names
+participante_nodes <- paste0(tabsankey2$Case, " (", tabsankey2$Family, ")")
+
+# We unify all nodes into a single list
+nodes_list <- unique(c(
+  distant_nodes,
+  abuse_nodes,
+  participante_nodes
+))
+
+nodes <- data.frame(
+  name = nodes_list,
+  stringsAsFactors = FALSE
+)
+
+# Create the 'nodes' dataframe with group logic for colors
+nodes$group <- case_when(
+  grepl("patient", nodes$name, ignore.case = TRUE) ~ "patient",
+  grepl("sibling|Mother|Father", nodes$name, ignore.case = TRUE) ~ "sibling_normal",
+  grepl("Distant/Poor", nodes$name) ~ "distant",
+  grepl("Physical Abuse", nodes$name) ~ "abuse",
+  TRUE ~ "outros"
+)
+
+# Add a numeric ID for each node
+nodes$id <- 0:(nrow(nodes) - 1)
+
+## --- Create the LINKS dataframe ---
+# Links from the Distant/Poor attribution to participants, with values as widths
+links_distant <- data.frame(
+  source = nodes$id[match(distant_nodes, nodes$name)],
+  target = nodes$id[match(participante_nodes, nodes$name)],
+  value = tabsankey2$`Distant/Inferior`
+)
+
+# Links from the Physical Abuse attribution to participants, with values as widths
+links_abuse <- data.frame(
+  source = nodes$id[match(abuse_nodes, nodes$name)],
+  target = nodes$id[match(participante_nodes, nodes$name)],
+  value = tabsankey2$`Physical Abuse`
+)
+
+# Combine all links into a single dataframe
+links <- rbind(links_distant, links_abuse)
+
+# Remove links with zero value to avoid invisible arrows
+links <- links[links$value > 0, ]
+
+## 3. Generate the Sankey diagram with the final colors
+num_groups <- length(unique(nodes$group))
+brewer_palette <- RColorBrewer::brewer.pal(n = min(num_groups, 8), name = "Dark2")
+
+my_color <- paste0('d3.scaleOrdinal()
+             .domain(["patient", "sibling_normal", "distant", "abuse", "outros"])
+             .range(', jsonlite::toJSON(brewer_palette), ')')
+
+p_novo <- sankeyNetwork(
+  Links = links, Nodes = nodes,
+  Source = "source", Target = "target",
+  Value = "value", NodeID = "name",
+  NodeGroup = "group", colourScale = my_color,
+  fontSize = 12, nodeWidth = 30
+)
+
+## Legend with the text "Significant Relationships"
+legenda_novo <- tags$div(
+  style = "display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: bold; font-size: 14px; width: 100%; max-width: 800px;",
+  tags$div("Significant Relationships", style = "flex: 1.5; text-align: left;"),
+  tags$div("Participants", style = "flex: 1; text-align: right;")
+)
+
+## Display the legend and the diagram
+browsable(tagList(legenda_novo, p_novo))
+```
+
