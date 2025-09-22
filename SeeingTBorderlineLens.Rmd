@@ -3,8 +3,8 @@ title: "Multiple Cases Sankey"
 author: "Ana Carolina Marinho"
 date: "2025-08-07"
 output:
-  html_document: default
-  pdf_document: default
+  html_document:
+    self_contained: true
 ---
 
 
