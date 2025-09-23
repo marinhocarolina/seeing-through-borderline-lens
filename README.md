@@ -1,6 +1,6 @@
 # Seeing Through the Borderline Lens
 
-This repository contains the code, data, and supplementary materials for the preprint:
+This repository contains the code and some of the data for the preprint:
 
 **Marinho, A. S., Chagas, C., Galduroz, J. C., Figueiredo, T., de Oliveira Martins Sassi, F. C., Junio, E. S., … de Mello, C. B. (2025, September 15). _Seeing through the borderline lens: how family perceptions and attributional bias shape borderline personality disorder_. PsyArXiv. [https://doi.org/10.31234/osf.io/hzjex_v2](https://doi.org/10.31234/osf.io/hzjex_v2)**
 
@@ -18,17 +18,11 @@ seeing-through-borderline-lens/
 │
 ├── README.md # Project description and instructions
 ├── LICENSE # CC-BY 4.0 License
-├── data/ # Data files (e.g., CSV, XLSX)
-│ └── errb_data.csv
+├── data/ # Sankey Data files csv
 ├── scripts/ # R scripts and R Markdown files
 │ ├── analysis.R
 │ └── analysis.Rmd
-├── results/ # Figures, tables, and generated reports
-│ └── figures/
-│ └── tables/
-└── supplementary/ # Additional materials
 └── seeing-through-borderline-lens.docx
-
 
 ---
 
@@ -50,7 +44,7 @@ install.packages(c("tidyverse", "knitr", "ggplot2", "readr"))
 
 ## Data
 
-The data/ folder contains anonymized and processed datasets used in the study. For raw materials and additional supplementary files, see our OSF project
+The sankey data/ folder contains anonymized and processed datasets used in the study for the diagram construction. For raw materials and additional supplementary files, see our OSF project
 .
 
 [**Click here to see the Sankey diagram data**](https://marinhocarolina.github.io/seeing-through-borderline-lens/sankeydata)
