@@ -62,3 +62,9 @@ This project is licensed under the CC-BY 4.0 International License, consistent w
 If you use this repository or the data/code for research, please cite:
 
 Marinho, A. S., Chagas, C., Galduroz, J. C., Figueiredo, T., de Oliveira Martins Sassi, F. C., Junio, E. S., … de Mello, C. B. (2025, September 15). Seeing through the borderline lens: how family perceptions and attributional bias shape borderline personality disorder. PsyArXiv. https://doi.org/10.31234/osf.io/hzjex_v2
+
+## Interactive Visualization
+
+[**Click here to see the interactive Sankey Diagram!**](https://marinhocarolina.github.io/seeing-through-borderline-lens/SeeingTBorderlineLens.html)
+
+This visualization was created with R and the networkD3 library.
