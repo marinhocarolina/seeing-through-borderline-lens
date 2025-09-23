@@ -5,6 +5,7 @@ date: "2025-08-07"
 output:
   html_document:
     self_contained: true
+    output_file: "index.html"
 ---
 
 
