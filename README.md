@@ -36,7 +36,7 @@ seeing-through-borderline-lens/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/seeing-through-borderline-lens.git
+git clone https://github.com/marinhocarolina/seeing-through-borderline-lens.git
 ```
 2. Open scripts/analysis.Rmd in RStudio.
 
