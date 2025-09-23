@@ -53,6 +53,8 @@ install.packages(c("tidyverse", "knitr", "ggplot2", "readr"))
 The data/ folder contains anonymized and processed datasets used in the study. For raw materials and additional supplementary files, see our OSF project
 .
 
+[**Click here to see the Sankey diagram data**](https://marinhocarolina.github.io/seeing-through-borderline-lens/data)
+
 ## License
 
 This project is licensed under the CC-BY 4.0 International License, consistent with the preprint license.
