@@ -2,7 +2,7 @@
 
 This repository contains the code and some of the data for the preprint:
 
-**Marinho, A. S., Chagas, C., Galduroz, J. C., Figueiredo, T., de Oliveira Martins Sassi, F. C., Junio, E. S., … de Mello, C. B. (2025, September 15). _Seeing through the borderline lens: how family perceptions and attributional bias shape borderline personality disorder_. PsyArXiv. [https://doi.org/10.31234/osf.io/hzjex_v2](https://doi.org/10.31234/osf.io/hzjex_v2)**
+**Marinho, A. C. S., Chagas, C., Galduroz, J. C., Figueiredo, T., de Oliveira Martins Sassi, F. C., Junio, E. S., … de Mello, C. B. (2025, September 15). _Seeing through the borderline lens: how family perceptions and attributional bias shape borderline personality disorder_. PsyArXiv. [https://doi.org/10.31234/osf.io/hzjex_v2](https://doi.org/10.31234/osf.io/hzjex_v2)**
 
 ---
 
@@ -55,7 +55,7 @@ This project is licensed under the CC-BY 4.0 International License, consistent w
 
 If you use this repository or the data/code for research, please cite:
 
-Marinho, A. S., Chagas, C., Galduroz, J. C., Figueiredo, T., de Oliveira Martins Sassi, F. C., Junio, E. S., … de Mello, C. B. (2025, September 15). Seeing through the borderline lens: how family perceptions and attributional bias shape borderline personality disorder. PsyArXiv. https://doi.org/10.31234/osf.io/hzjex_v2
+Marinho, A.C.S., Chagas, C., Galduroz, J. C., Figueiredo, T., de Oliveira Martins Sassi, F. C., Junio, E. S., … de Mello, C. B. (2025, September 15). Seeing through the borderline lens: how family perceptions and attributional bias shape borderline personality disorder. PsyArXiv. https://doi.org/10.31234/osf.io/hzjex_v2
 
 ## Interactive Visualization
 
