@@ -29,7 +29,7 @@ This Sankey diagram displays the width of flows between participants and symptom
 pacotes_necessarios <- c("tidyverse", "networkD3", "htmlwidgets", "htmltools", "RColorBrewer", "jsonlite", "here")
 for (pacote in pacotes_necessarios) {
   if (!require(pacote, character.only = TRUE)) {
-    install.packages(pacote, dependencies = TRUE)
+        install.packages(pacote, dependencies = TRUE, repos = "https://cloud.r-project.org")
   }
   library(pacote, character.only = TRUE)
 }
