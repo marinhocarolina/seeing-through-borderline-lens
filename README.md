@@ -33,18 +33,18 @@ seeing-through-borderline-lens/
 git clone https://github.com/marinhocarolina/seeing-through-borderline-lens.git
 ```
 2. Open scripts/analysis.Rmd in RStudio.
-
-3. Install required packages (if not already installed):
+3. Download tabsankey2.csv
+4. Install required packages (if not already installed):
 ```
 install.packages(c("tidyverse", "knitr", "ggplot2", "readr"))
 ```
-4. Knit the R Markdown file to HTML or PDF to reproduce the analyses and figures.
+5. Knit the R Markdown file to HTML or PDF to reproduce the analyses and figures.
 
-5. Generated results (figures, tables) will appear in the results/ folder.
+6. Generated results (figures, tables) will appear in the results/ folder.
 
 ## Data
 
-The sankey data/ folder contains anonymized and processed datasets used in the study for the diagram construction. For raw materials and additional supplementary files, see our OSF project
+The tabsankey2.csv data/ folder contains anonymized and processed datasets used in the study for the diagram construction. For raw materials and additional supplementary files, see our OSF project
 .
 
 ## License
